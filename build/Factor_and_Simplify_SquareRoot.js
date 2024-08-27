@@ -4013,7 +4013,6 @@ function dbg(...args) {
       return func;
     };
   
-  
   var writeArrayToMemory = (array, buffer) => {
       assert(array.length >= 0, 'writeArrayToMemory array must have a length (should be an array or typed array)')
       HEAP8.set(array, buffer);
@@ -4081,6 +4080,8 @@ function dbg(...args) {
       ret = onDone(ret);
       return ret;
     };
+
+  
   
     /**
      * @param {string=} returnType
@@ -4090,6 +4091,7 @@ function dbg(...args) {
   var cwrap = (ident, returnType, argTypes, opts) => {
       return (...args) => ccall(ident, returnType, argTypes, args, opts);
     };
+
 
   FS.createPreloadedFile = FS_createPreloadedFile;
   FS.staticInit();
@@ -4127,7 +4129,6 @@ var wasmImports = {
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors', 0);
 var _processInputWrapper = Module['_processInputWrapper'] = createExportWrapper('processInputWrapper', 1);
-var _freeMemory = Module['_freeMemory'] = createExportWrapper('freeMemory', 1);
 var _main = createExportWrapper('__main_argc_argv', 2);
 var _fflush = createExportWrapper('fflush', 1);
 var _strerror = createExportWrapper('strerror', 1);
@@ -4148,7 +4149,9 @@ var dynCall_iiiiiijj = Module['dynCall_iiiiiijj'] = createExportWrapper('dynCall
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===
 
+Module['ccall'] = ccall;
 Module['cwrap'] = cwrap;
+Module['UTF8ToString'] = UTF8ToString;
 var missingLibrarySymbols = [
   'writeI53ToI64',
   'writeI53ToI64Clamped',
@@ -4355,7 +4358,6 @@ var unexportedSymbols = [
   'wasmTable',
   'noExitRuntime',
   'getCFunc',
-  'ccall',
   'freeTableIndexes',
   'functionsInTableMap',
   'setValue',
@@ -4364,7 +4366,6 @@ var unexportedSymbols = [
   'PATH_FS',
   'UTF8Decoder',
   'UTF8ArrayToString',
-  'UTF8ToString',
   'stringToUTF8Array',
   'stringToUTF8',
   'lengthBytesUTF8',

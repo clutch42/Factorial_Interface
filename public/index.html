@@ -17,7 +17,7 @@
     <script>
         // Load the WebAssembly module
         const script = document.createElement('script');
-        script.src = '../build/hello_world.js';
+        script.src = '../build/Factor_and_Simplify_SquareRoot.js';
 
         // Once the script is loaded
         script.onload = () => {
@@ -36,8 +36,8 @@
                     } else {
                         // Call the C++ function with the input value
                         console.log(number);
-                        const result = Module._printToWeb(number);
-                        console.log(result);
+                        const result = Module._processInputWrapper(number);
+                        console.log(UTF8ToString(result));
                         resultElement.innerText = UTF8ToString(result);
                     }
                 });

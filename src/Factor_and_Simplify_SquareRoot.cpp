@@ -114,17 +114,11 @@ string processInput(int number) {
 
 // Function to process the input number
 extern "C" {
-    char* processInputWrapper(int number) {
-        std::string result = "Processed number: " + std::to_string(number);
+    const char* processInputWrapper(int number) {
+        static std::string result;
         // Allocate memory for result
-        char* result_cstr = new char[result.length() + 1];
-        std::strcpy(result_cstr, result.c_str());
-        return result_cstr;
-    }
-
-    // You need to provide a way to free the allocated memory
-    void freeMemory(char* ptr) {
-        delete[] ptr;
+        result = processInput(number);
+        return result.c_str();
     }
 }
 
