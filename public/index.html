@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factor and Simplify Square Root</title>
+</head>
+<body>
+    <h1>Factor and Simplify Square Root</h1>
+    <form id="factor-form">
+        <label for="number">Enter a number:</label>
+        <input type="text" id="number" name="number">
+        <button type="submit">Submit</button>
+    </form>
+    <p id="result">Result will be displayed here.</p>
+
+    <script>
+        // Load the WebAssembly module
+        const script = document.createElement('script');
+        script.src = '../build/hello_world.js';
+
+        // Once the script is loaded
+        script.onload = () => {
+            // Ensure the Emscripten module is loaded
+            console.log('Script loaded');
+            Module.onRuntimeInitialized = () => {
+                document.getElementById('factor-form').addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const inputElement = document.getElementById('number');
+                    const resultElement = document.getElementById('result');
+                    const number = parseInt(inputElement.value, 10);  // Get the input value
+
+                    if (isNaN(number)) {
+                        resultElement.innerText = 'Please enter a number.';
+                    } else {
+                        // Call the C++ function with the input value
+                        console.log(number);
+                        const result = Module._printToWeb(number);
+                        console.log(result);
+                        resultElement.innerText = UTF8ToString(result);
+                    }
+                });
+            };
+        };
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>

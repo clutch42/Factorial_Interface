@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <windows.h>
 
 using namespace std;
 
@@ -113,16 +112,25 @@ string processInput(int number) {
     return output;
 }
 
-wstring utf8ToWstring(const string& utf8) {
-    int size_needed = MultiByteToWideChar(CP_UTF8, 0, &utf8[0], (int)utf8.size(), NULL, 0);
-    wstring wstr(size_needed, 0);
-    MultiByteToWideChar(CP_UTF8, 0, &utf8[0], (int)utf8.size(), &wstr[0], size_needed);
-    return wstr;
+// Function to process the input number
+extern "C" {
+    char* processInputWrapper(int number) {
+        std::string result = "Processed number: " + std::to_string(number);
+        // Allocate memory for result
+        char* result_cstr = new char[result.length() + 1];
+        std::strcpy(result_cstr, result.c_str());
+        return result_cstr;
+    }
+
+    // You need to provide a way to free the allocated memory
+    void freeMemory(char* ptr) {
+        delete[] ptr;
+    }
 }
 
 int main(int argc, char* argv[]) {
     // Set console output code page to UTF-8
-    SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleOutputCP(CP_UTF8);
 
     if (argc != 2) {
         wcerr << u8"Usage: " << argv[0] << u8" <positive_integer>" << endl;
